@@ -20,7 +20,6 @@ func main() {
 	//Load Database config from config.yml
 	err := config.GetDatabaseConfig()
 	if err != nil {
-		fmt.Println("11111111111111111111111")
 		log.Fatal(err.Error())
 	}
 
