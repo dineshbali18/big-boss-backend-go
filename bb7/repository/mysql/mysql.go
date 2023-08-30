@@ -11,7 +11,7 @@ type repository struct {
 	db *gorm.DB
 }
 
-func NewUser(db *gorm.DB) domain.UserRepository {
+func NewUser(db *gorm.DB) domain.BBRepository {
 	return &repository{db: db}
 }
 
@@ -19,7 +19,7 @@ func (repository *repository) UpdateMysqlUserRepository(db *gorm.DB) {
 	repository.db = db
 }
 
-func (repository *repository) RegisterUserUsingDeviceId(userRegisterationPayload domain.UserRegisterationPayload) (userRegisterationResponse domain.UserRegisterationResponse, err error) {
+func (repository *repository) RegisterWithDeviceID(userRegisterationPayload domain.UserRegisterationPayload) (userRegisterationResponse domain.UserRegisterationResponse, err error) {
 
 	type userData struct {
 		ID       uint

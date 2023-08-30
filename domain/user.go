@@ -28,10 +28,10 @@ type UserRegisterationResponsewithJWT struct {
 	DeviceID    *string `json:"deviceId"`
 }
 
-type UserUseCase interface {
-	RegisterUserUsingDeviceId(userRegisterationPayload UserRegisterationPayload) (userRegisterationResponse UserRegisterationResponse, err error)
-}
+// type UserUseCase interface {
+// 	RegisterUserUsingDeviceId(userRegisterationPayload UserRegisterationPayload) (userRegisterationResponse UserRegisterationResponse, err error)
+// }
 
-type UserRepository interface {
-	RegisterUserUsingDeviceId(userRegisterationPayload UserRegisterationPayload) (userRegisterationResponse UserRegisterationResponse, err error)
-}
+// type UserRepository interface {
+// 	RegisterUserUsingDeviceId(userRegisterationPayload UserRegisterationPayload) (userRegisterationResponse UserRegisterationResponse, err error)
+// }

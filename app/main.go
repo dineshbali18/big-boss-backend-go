@@ -5,15 +5,25 @@ import (
 	"fmt"
 	"log"
 
+	bbDelivery "big-boss-7/bb7/delivery/http"
+	bbRepository "big-boss-7/bb7/repository/mysql"
+	bbUsecase "big-boss-7/bb7/usecase"
+
+	"github.com/labstack/echo/v4"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/plugin/dbresolver"
 )
 
+var (
+	e *echo.Echo
+)
+
 func init() {
 	//Initialize config
 	config.InitializeConfig()
+	e = echo.New()
 }
 
 func main() {
@@ -39,5 +49,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
 	fmt.Println("DATABASE CONNECTED SUCCESSFULLY")
+
+	bbDelivery.NewBBHandler(e, bbUsecase.NewUser(bbRepository.NewUser(db)))
+	log.Fatal(e.Start(":" + "3306"))
+
 }
