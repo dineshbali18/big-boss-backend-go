@@ -8,9 +8,8 @@ const (
 
 // UserRegisterationPayload represents the payload for user registration
 type UserRegisterationPayload struct {
-	ID          uint    `json:"id"`
-	PhoneNumber *string `json:"phoneNumber"`
-	DeviceID    *string `json:"deviceId"`
+	ID       uint    `json:"id"`
+	DeviceID *string `json:"deviceId"`
 }
 
 // UserRegisterationResponse represents the response for user registration

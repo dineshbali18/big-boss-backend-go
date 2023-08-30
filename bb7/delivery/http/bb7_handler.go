@@ -16,7 +16,7 @@ type delivery struct {
 func NewBBHandler(e *echo.Echo, useCase domain.BBUsecase) {
 	handler := &delivery{BBUsecase: useCase}
 
-	e.POST("/v1/superApps/users/register/device", handler.RegisterUserUsingDeviceId)
+	e.POST("/v1/bb7/users/register/device", handler.RegisterUserUsingDeviceId)
 }
 
 func (delivery *delivery) RegisterUserUsingDeviceId(context echo.Context) error {
