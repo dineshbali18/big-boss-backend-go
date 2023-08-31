@@ -1,1 +1,1 @@
-DB_MYSQL_SECRETS: '{"username":"admin","password":"bigboss7","type":"mysql","host":"database-1.cxj0vptaqoh5.ap-south-1.rds.amazonaws.com","port":"3306","DatabaseURL":"BigBoss7"}'
+DB_MYSQL_SECRETS: '{"username":"admin","password":"bigboss7","type":"mysql","host":"database-1.cxj0vptaqoh5.ap-south-1.rds.amazonaws.com","port":"3306","DatabaseName":"BigBoss7"}'
