@@ -53,6 +53,6 @@ func main() {
 	fmt.Println("DATABASE CONNECTED SUCCESSFULLY")
 
 	bbDelivery.NewBBHandler(e, bbUsecase.NewUser(bbRepository.NewUser(db)))
-	log.Fatal(e.Start(":" + "3306"))
+	log.Fatal(e.Start(":" + "80"))
 
 }
