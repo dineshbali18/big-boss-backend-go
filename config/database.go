@@ -78,6 +78,7 @@ func generatedDatabaseURL(host string) (databaseURL string, err error) {
 			DatabaseConfig.Port,
 			DatabaseConfig.DatabaseName,
 		)
+		fmt.Println("DDDDDDDDDDDDDRRRRRRRRRRRR", DatabaseConfig.DatabaseName)
 		return
 	}
 	err = fmt.Errorf("invalid database type: %s", DatabaseConfig.Type)
