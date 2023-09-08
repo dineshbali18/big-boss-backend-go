@@ -175,6 +175,9 @@ var (
 	ProductRequestPayloadExceedsMaxLength = ResponseError{"productRequestPayloadExceedsMaxLength", "product request payload exceeds max length", http.StatusBadRequest}
 	// InvalidUserRegisterationPayload represents error message for invalidUserRegisterationPayload
 	InvalidUserRegisterationPayload = ResponseError{"invalidUserRegisterationPayload", "invalid user registeration payload provided", http.StatusBadRequest}
+	// InvalidUserVotesPayload represents error message for invalidUserRegisterationPayload
+	InvalidUserVotesPayload = ResponseError{"invalidUserVotesPayload", "invalid user votes payload provided", http.StatusBadRequest}
+
 	// MissingCloudAccountID represents error message for missingCloudAccountID
 	MissingCloudAccountID = ResponseError{"missingCloudAccountID", "cloud account id is missing", http.StatusBadRequest}
 	// InvalidAddOrRemoveFromWishlistPayload represents error message for invalidAddOrRemoveFromWishlistPayload

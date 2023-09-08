@@ -52,3 +52,28 @@ func (repository *repository) RegisterWithDeviceID(userRegisterationPayload doma
 	return
 
 }
+
+func (repository *repository) VoteContestant(contestantID int) error {
+
+}
+
+func (repository *repository) GetContestants() error {
+
+}
+
+func (repository *repository) GetNominatedContestants() error {
+
+}
+
+func (repository *repository) GetAllContestantVotes() error {
+
+}
+
+func (repository *repository) GetUserVotes(deviceID int) (int, error) {
+	var votes int
+	err := repository.db.WithContext().Where(deviceID).Scan(votes).Error
+	if err != nil {
+		return -1, err
+	}
+	return votes, err
+}
