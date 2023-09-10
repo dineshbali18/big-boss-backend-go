@@ -1,0 +1,1 @@
+DROP Table contestants_votes;

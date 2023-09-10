@@ -7,6 +7,6 @@ CREATE TABLE users (
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT ='Table to store device id registrations';
   
--- Add unique index to deviceID
-CREATE UNIQUE INDEX device_id_idx
-ON users (id,device_id);
+-- Add primary key and unique index to deviceID
+ALTER TABLE users ADD PRIMARY KEY(id),
+ADD UNIQUE KEY `device_id_idx`;

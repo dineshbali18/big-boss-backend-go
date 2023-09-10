@@ -66,12 +66,12 @@ func (repository *repository) GetNominatedContestants() error {
 }
 
 func (repository *repository) GetAllContestantVotes() error {
-
+	err := repository.db.WithContext(context.Background())
 }
 
 func (repository *repository) GetUserVotes(deviceID int) (int, error) {
 	var votes int
-	err := repository.db.WithContext().Where(deviceID).Scan(votes).Error
+	err := repository.db.WithContext(context.Background()).Where(deviceID).Scan(votes).Error
 	if err != nil {
 		return -1, err
 	}
