@@ -28,21 +28,43 @@ func (useCase *usecase) RegisterUserUsingDeviceID(userRegisterationPayload domai
 }
 
 func (usecase *usecase) VoteContestant(UserVotesPayload domain.UserVotesPayload) (int, error) {
+	// Begin a database transaction
+	tx := usecase.repository.GetDB().Begin()
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
 	votesLeft, err := usecase.GetUserVotes(UserVotesPayload.DeviceID)
 	if err != nil {
+		tx.Rollback()
 		return 0, err
 	}
 	if votesLeft <= 0 {
 		//prepare a customized error
+		tx.Rollback()
 		return 0, err
 	}
 
 	if len(UserVotesPayload.UserVote) > 0 {
 		for i := 0; i < len(UserVotesPayload.UserVote); i++ {
-			usecase.repository.VoteContestant(UserVotesPayload.UserVote[i].ContestantID, 1)
+			// change here if there is any change in number of votes
+			// 1 in the below line indicates that one vote will be incremented in contestants_votes table
+			err := usecase.repository.VoteContestant(tx, UserVotesPayload.UserVote[i].ContestantID, 1)
+			if err != nil {
+				tx.Rollback()
+				return 0, err
+			}
 		}
 	}
-	return 0, err
+	err = tx.Commit().Error
+	if err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+	return 0, nil
 }
 
 // cache it for 5 months.

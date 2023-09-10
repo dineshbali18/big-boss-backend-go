@@ -19,6 +19,10 @@ func (repository *repository) UpdateMysqlUserRepository(db *gorm.DB) {
 	repository.db = db
 }
 
+func (repository *repository) GetDB() *gorm.DB {
+	return repository.db
+}
+
 func (repository *repository) RegisterWithDeviceID(userRegisterationPayload domain.UserRegisterationPayload) (userRegisterationResponse domain.UserRegisterationResponse, err error) {
 
 	type userData struct {
@@ -53,8 +57,8 @@ func (repository *repository) RegisterWithDeviceID(userRegisterationPayload doma
 
 }
 
-func (repository *repository) VoteContestant(contestantID int, votes int) error {
-	err := repository.db.WithContext(context.Background()).Exec("UPDATE contestants_votes SET votes=votes+? where contestant_id=?", votes, contestantID).Error
+func (repository *repository) VoteContestant(tx *gorm.DB, contestantID int, votes int) error {
+	err := tx.Exec("UPDATE contestants_votes SET votes=votes+? where contestant_id=?", votes, contestantID).Error
 	if err != nil {
 		return err
 	}
