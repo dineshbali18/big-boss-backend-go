@@ -15,7 +15,7 @@ type UserRegisterationPayload struct {
 
 type UserVotesPayload struct {
 	UserVote []UserVotes `json:"userVotes"`
-	DeviceID *string     `json:"deviceId"`
+	DeviceID string      `json:"deviceId"`
 	ApiToken string      `json:"apiToken"`
 }
 

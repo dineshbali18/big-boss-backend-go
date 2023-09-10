@@ -53,25 +53,45 @@ func (repository *repository) RegisterWithDeviceID(userRegisterationPayload doma
 
 }
 
-func (repository *repository) VoteContestant(contestantID int) error {
-
+func (repository *repository) VoteContestant(contestantID int, votes int) error {
+	err := repository.db.WithContext(context.Background()).Exec("UPDATE contestants_votes SET votes=votes+? where contestant_id=?", votes, contestantID).Error
+	if err != nil {
+		return err
+	}
+	return err
 }
 
-func (repository *repository) GetContestants() error {
-
+func (repository *repository) GetAllContestants() ([]domain.Contestants, error) {
+	var nominatedContestants []domain.Contestants
+	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(nominatedContestants).Error
+	if err != nil {
+		return nominatedContestants, err
+	}
+	return nominatedContestants, err
 }
 
-func (repository *repository) GetNominatedContestants() error {
-
+func (repository *repository) GetNominatedContestants() ([]domain.Contestants, error) {
+	var nominatedContestants []domain.Contestants
+	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(nominatedContestants).Where("is_nominated=1").Error
+	if err != nil {
+		return nominatedContestants, err
+	}
+	return nominatedContestants, err
 }
 
-func (repository *repository) GetAllContestantVotes() error {
-	err := repository.db.WithContext(context.Background())
+// returns array of objects with contestant name and the number of votes
+func (repository *repository) GetAllContestantsVotes() ([]domain.ContestantVotes, error) {
+	var contestantVotes []domain.ContestantVotes
+	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(contestantVotes).Error
+	if err != nil {
+		return contestantVotes, err
+	}
+	return contestantVotes, err
 }
 
-func (repository *repository) GetUserVotes(deviceID int) (int, error) {
+func (repository *repository) GetUserVotes(deviceID string) (int, error) {
 	var votes int
-	err := repository.db.WithContext(context.Background()).Where(deviceID).Scan(votes).Error
+	err := repository.db.WithContext(context.Background()).Table(domain.UsersTable).Select("votes").Where("device_id=?", deviceID).Scan(votes).Error
 	if err != nil {
 		return -1, err
 	}

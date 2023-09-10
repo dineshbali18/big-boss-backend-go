@@ -102,9 +102,9 @@ func (delivery *delivery) GetVotesInPercentages(context echo.Context) error {
 }
 
 func (delivery *delivery) GetUserVotes(context echo.Context) error {
-	deviceID, err := context.Param("id")
-	if err != nil {
-		log.Fatal("Error in Fetching user votes", err)
+	deviceID := context.Param("id")
+	if len(deviceID) == 0 {
+		log.Fatal("Error in Fetching user votes")
 		return context.JSON(http.StatusBadRequest, "Invalid Device ID")
 	}
 	votesAvailable, err := delivery.BBUsecase.GetUserVotes(deviceID)
