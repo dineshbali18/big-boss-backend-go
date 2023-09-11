@@ -3,6 +3,7 @@ package mysql
 import (
 	"big-boss-7/domain"
 	"context"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -66,17 +67,19 @@ func (repository *repository) VoteContestant(tx *gorm.DB, contestantID int, vote
 }
 
 func (repository *repository) GetAllContestants() ([]domain.Contestants, error) {
+	fmt.Println("IN REPO")
 	var nominatedContestants []domain.Contestants
-	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(nominatedContestants).Error
+	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(&nominatedContestants).Error
 	if err != nil {
 		return nominatedContestants, err
 	}
+	fmt.Println("NOMIN")
 	return nominatedContestants, err
 }
 
 func (repository *repository) GetNominatedContestants() ([]domain.Contestants, error) {
 	var nominatedContestants []domain.Contestants
-	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(nominatedContestants).Where("is_nominated=1").Error
+	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(&nominatedContestants).Where("is_nominated=1").Error
 	if err != nil {
 		return nominatedContestants, err
 	}
@@ -87,7 +90,7 @@ func (repository *repository) GetNominatedContestants() ([]domain.Contestants, e
 func (repository *repository) GetAllContestantsVotes() ([]domain.ContestantVotes, error) {
 	var contestantVotes []domain.ContestantVotes
 	// join contestant and contestant votes
-	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(contestantVotes).Error
+	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(&contestantVotes).Error
 	if err != nil {
 		return contestantVotes, err
 	}
@@ -96,7 +99,7 @@ func (repository *repository) GetAllContestantsVotes() ([]domain.ContestantVotes
 
 func (repository *repository) GetUserVotes(deviceID string) (int, error) {
 	var votes int
-	err := repository.db.WithContext(context.Background()).Table(domain.UsersTable).Select("votes").Where("device_id=?", deviceID).Scan(votes).Error
+	err := repository.db.WithContext(context.Background()).Table(domain.UsersTable).Select("votes").Where("device_id=?", deviceID).Scan(&votes).Error
 	if err != nil {
 		return -1, err
 	}
