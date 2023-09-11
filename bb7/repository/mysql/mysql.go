@@ -79,7 +79,7 @@ func (repository *repository) GetAllContestants() ([]domain.Contestants, error) 
 
 func (repository *repository) GetNominatedContestants() ([]domain.Contestants, error) {
 	var nominatedContestants []domain.Contestants
-	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(&nominatedContestants).Where("is_nominated=1").Error
+	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Find(&nominatedContestants).Where("is_nominated=1").Error
 	if err != nil {
 		return nominatedContestants, err
 	}
