@@ -8,7 +8,7 @@ type BBUsecase interface {
 	VoteContestant(UserVotesPayload UserVotesPayload) (int, error)
 	GetAllContestants() ([]Contestants, error)
 	GetNominatedContestants() ([]Contestants, error)
-	GetVotesInPercentages() ([]VotesPercentages, error)
+	GetVotesInPercentages() (VotesPercentages, error)
 	GetUserVotes(deviceID string) (int, error)
 }
 

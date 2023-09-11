@@ -20,6 +20,6 @@ type Contestants struct {
 }
 
 type VotesPercentages struct {
-	Name        string    `json:"name"`
+	Name        []string  `json:"name"`
 	Percentages []float32 `json:"percentages"`
 }

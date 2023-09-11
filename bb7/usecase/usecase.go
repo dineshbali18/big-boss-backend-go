@@ -3,6 +3,7 @@ package usecase
 import (
 	"big-boss-7/domain"
 	"fmt"
+	"sort"
 )
 
 type usecase struct {
@@ -86,14 +87,28 @@ func (usecase *usecase) GetNominatedContestants() ([]domain.Contestants, error) 
 }
 
 // cache it for 15 min
-func (usecase *usecase) GetVotesInPercentages() ([]domain.VotesPercentages, error) {
-	var votesPercentages []domain.VotesPercentages
+func (usecase *usecase) GetVotesInPercentages() (domain.VotesPercentages, error) {
+	var votesPercentages domain.VotesPercentages
 	// call getAllContestantVotes
 	votes, err := usecase.repository.GetAllContestantsVotes()
 	if err != nil {
 		return votesPercentages, err
 	}
 	fmt.Println(votes)
+	sort.Slice(votes, func(i int, j int) bool {
+		return votes[i].Votes > votes[j].Votes
+	})
+	fmt.Println("AFTER SORTING :", votes)
+	var totalVotes int64
+	for i := range votes {
+		votesPercentages.Name = append(votesPercentages.Name, votes[i].Name)
+		totalVotes += int64(votes[i].Votes)
+	}
+
+	for votes := range votesPercentages.Percentages {
+		tempPercentage := float32(votes) / float32(totalVotes)
+		votesPercentages.Percentages = append(votesPercentages.Percentages, tempPercentage)
+	}
 
 	return votesPercentages, err
 }
