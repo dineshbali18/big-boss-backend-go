@@ -22,6 +22,11 @@ func NewBBHandler(e *echo.Echo, useCase domain.BBUsecase) {
 	e.GET("/v1/bb/nominated/contestants", handler.GetNominatedContestants)
 	e.GET("/v1/bb/contestants/results", handler.GetVotesInPercentages)
 	e.GET("/v1/bb/user/:id/votes", handler.GetUserVotes)
+	e.GET("/", handler.healthCheck)
+}
+
+func (delivery *delivery) healthCheck(context echo.Context) error {
+	return context.JSON(http.StatusOK, "server is up and running")
 }
 
 func (delivery *delivery) RegisterUserUsingDeviceId(context echo.Context) error {
