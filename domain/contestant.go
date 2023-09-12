@@ -2,7 +2,7 @@ package domain
 
 const (
 	ContestantsTable      = "contestants"
-	ContestantsVotesTable = "contestant_votes"
+	ContestantsVotesTable = "contestants_votes"
 )
 
 type ContestantVotes struct {

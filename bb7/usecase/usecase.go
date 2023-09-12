@@ -97,7 +97,7 @@ func (usecase *usecase) GetVotesInPercentages() (domain.VotesPercentages, error)
 	}
 	fmt.Println(votes)
 	sort.Slice(votes, func(i int, j int) bool {
-		return votes[i].Votes > votes[j].Votes
+		return votes[i].Votes < votes[j].Votes
 	})
 	fmt.Println("AFTER SORTING :", votes)
 	var totalVotes int64
@@ -106,9 +106,10 @@ func (usecase *usecase) GetVotesInPercentages() (domain.VotesPercentages, error)
 		totalVotes += int64(votes[i].Votes)
 	}
 
-	for votes := range votesPercentages.Percentages {
-		tempPercentage := float32(votes) / float32(totalVotes)
-		votesPercentages.Percentages = append(votesPercentages.Percentages, tempPercentage)
+	for j := range votes {
+		tmpVotes := votes[j].Votes
+		tempPercentage := float32(tmpVotes) / float32(totalVotes)
+		votesPercentages.Percentages = append(votesPercentages.Percentages, tempPercentage*100)
 	}
 
 	return votesPercentages, err
