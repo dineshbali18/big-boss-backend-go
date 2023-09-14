@@ -16,6 +16,7 @@ type BBUsecase interface {
 type BBRepository interface {
 	RegisterWithDeviceID(userRegisterationPayload UserRegisterationPayload) (userRegisterationResponse UserRegisterationResponse, err error)
 	VoteContestant(tx *gorm.DB, contestantID int, votes int) error
+	DecrementUserVotes(tx *gorm.DB, deviceID string, votes int) error
 	GetAllContestants() ([]Contestants, error)
 	GetNominatedContestants() ([]Contestants, error)
 	GetAllContestantsVotes() ([]ContestantVotes, error)

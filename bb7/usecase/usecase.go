@@ -58,6 +58,11 @@ func (usecase *usecase) VoteContestant(UserVotesPayload domain.UserVotesPayload)
 				tx.Rollback()
 				return 0, err
 			}
+			err1 := usecase.repository.DecrementUserVotes(tx, UserVotesPayload.DeviceID, 1)
+			if err1 != nil {
+				tx.Rollback()
+				return 0, err1
+			}
 		}
 	}
 	err = tx.Commit().Error

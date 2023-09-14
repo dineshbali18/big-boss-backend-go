@@ -66,6 +66,14 @@ func (repository *repository) VoteContestant(tx *gorm.DB, contestantID int, vote
 	return err
 }
 
+func (repository *repository) DecrementUserVotes(tx *gorm.DB, deviceID string, votes int) error {
+	err := tx.Exec("UPDATE users SET votes=votes-? where device_id=?", votes, deviceID).Error
+	if err != nil {
+		return err
+	}
+	return err
+}
+
 func (repository *repository) GetAllContestants() ([]domain.Contestants, error) {
 	fmt.Println("IN REPO")
 	var nominatedContestants []domain.Contestants
