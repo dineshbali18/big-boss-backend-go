@@ -16,7 +16,6 @@ type Contestants struct {
 	Name        string `json:"name"`
 	Description string `json:"description,omitempty"`
 	Image       string `json:"image,omitempty"`
-	Votes       int    `json:"votes,omitempty"`
 }
 
 type VotesPercentages struct {
