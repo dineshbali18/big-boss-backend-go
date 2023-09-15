@@ -3,7 +3,6 @@ package mysql
 import (
 	"big-boss-7/domain"
 	"context"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -75,13 +74,11 @@ func (repository *repository) DecrementUserVotes(tx *gorm.DB, deviceID string, v
 }
 
 func (repository *repository) GetAllContestants() ([]domain.Contestants, error) {
-	fmt.Println("IN REPO")
 	var nominatedContestants []domain.Contestants
 	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsTable).Scan(&nominatedContestants).Error
 	if err != nil {
 		return nominatedContestants, err
 	}
-	fmt.Println("NOMIN")
 	return nominatedContestants, err
 }
 
