@@ -30,13 +30,13 @@ func main() {
 	//Load Database config from config.yml
 	err := config.GetDatabaseConfig()
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Println(err.Error())
 	}
 
 	// Establish data base connection
 	db, err := gorm.Open(mysql.Open(config.DatabaseConfig.DatabaseURL), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Println(err.Error())
 	}
 
 	// Specifying DB Reader and Writer
@@ -47,7 +47,7 @@ func main() {
 	}))
 
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Println(err.Error())
 	}
 
 	fmt.Println("DATABASE CONNECTED SUCCESSFULLY")

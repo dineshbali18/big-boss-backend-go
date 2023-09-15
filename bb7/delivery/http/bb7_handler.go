@@ -3,6 +3,7 @@ package http
 import (
 	"big-boss-7/domain"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -34,8 +35,11 @@ func (delivery *delivery) RegisterUserUsingDeviceId(context echo.Context) error 
 
 	var userRegisterationPayload domain.UserRegisterationPayload
 	err := json.NewDecoder(context.Request().Body).Decode(&userRegisterationPayload)
+	fmt.Println("-------------------------------------------------------------")
+	fmt.Println(err)
 	if err != nil {
-		log.Fatal(err.Error())
+		fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAA")
+		log.Println(err.Error())
 		return context.JSON(http.StatusBadRequest, domain.InvalidUserRegisterationPayload)
 	}
 
@@ -44,13 +48,13 @@ func (delivery *delivery) RegisterUserUsingDeviceId(context echo.Context) error 
 	}
 
 	if userRegisterationPayload.DeviceID == nil || (userRegisterationPayload.DeviceID != nil && len(*userRegisterationPayload.DeviceID) == 0) {
-		log.Fatal(err.Error())
+		log.Println(err.Error())
 		return context.JSON(http.StatusBadRequest, domain.InvalidDeviceIDPayload)
 	}
 
 	response, err := delivery.BBUsecase.RegisterUserUsingDeviceID(userRegisterationPayload)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Println(err.Error())
 		return context.JSON(http.StatusInternalServerError, domain.ErrUnexpectedError)
 	}
 
@@ -68,7 +72,7 @@ func (delivery *delivery) VoteContestant(context echo.Context) error {
 	var userRegisterationPayload domain.UserVotesPayload
 	err := json.NewDecoder(context.Request().Body).Decode(&userRegisterationPayload)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Println(err.Error())
 		return context.JSON(http.StatusBadRequest, domain.InvalidUserVotesPayload)
 	}
 	if len(userRegisterationPayload.ApiToken) > 0 && userRegisterationPayload.ApiToken != "dineshbali91210850445@" {
@@ -100,7 +104,7 @@ func (delivery *delivery) GetNominatedContestants(context echo.Context) error {
 func (delivery *delivery) GetVotesInPercentages(context echo.Context) error {
 	response, err := delivery.BBUsecase.GetVotesInPercentages()
 	if err != nil {
-		log.Fatal("Get votes in percentages", err)
+		log.Println("Get votes in percentages", err)
 		return context.JSON(http.StatusBadRequest, err)
 	}
 	return context.JSON(http.StatusOK, response)
@@ -109,7 +113,7 @@ func (delivery *delivery) GetVotesInPercentages(context echo.Context) error {
 func (delivery *delivery) GetUserVotes(context echo.Context) error {
 	deviceID := context.Param("id")
 	if len(deviceID) == 0 {
-		log.Fatal("Error in Fetching user votes")
+		log.Println("Error in Fetching user votes")
 		return context.JSON(http.StatusBadRequest, "Invalid Device ID")
 	}
 	votesAvailable, err := delivery.BBUsecase.GetUserVotes(deviceID)
