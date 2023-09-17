@@ -23,3 +23,8 @@ type BBRepository interface {
 	GetUserVotes(deviceID string) (int, error)
 	GetDB() *gorm.DB
 }
+
+// CacheService
+type CacheService interface {
+	CheckRedisConnection() (result string, err error)
+}

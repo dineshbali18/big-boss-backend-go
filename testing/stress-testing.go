@@ -21,7 +21,7 @@ func sendRequest(url string, wg *sync.WaitGroup) {
 
 func main() {
 	targetURL := "http://BigBoss-ALB-213346331.ap-south-1.elb.amazonaws.com/v1/bb/user/dinesh/votes" // Replace with your target URL
-	numRequests := 100000                                                                            // Number of requests to send
+	numRequests := 10000                                                                             // Number of requests to send
 	var wg sync.WaitGroup
 
 	for i := 0; i < numRequests; i++ {

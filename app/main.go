@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 
+	cacheServices "big-boss-7/cacheservice"
+
 	bbDelivery "big-boss-7/bb7/delivery/http"
 	bbRepository "big-boss-7/bb7/repository/mysql"
 	bbUsecase "big-boss-7/bb7/usecase"
@@ -51,6 +53,18 @@ func main() {
 	}
 
 	fmt.Println("DATABASE CONNECTED SUCCESSFULLY")
+
+	rdb := cacheServices.InitRedisCacheService()
+	cacheService := cacheServices.NewRedisCacheService(rdb)
+
+	res, err := cacheService.CheckRedisConnection()
+
+	if err != nil {
+		fmt.Println("Redis not connected properly", err)
+		return
+	} else {
+		fmt.Println("Redis connected succesfully....", res)
+	}
 
 	bbDelivery.NewBBHandler(e, bbUsecase.NewUser(bbRepository.NewUser(db)))
 	log.Fatal(e.Start(":" + "80"))
