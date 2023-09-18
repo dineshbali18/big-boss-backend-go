@@ -78,7 +78,7 @@ func (usecase *usecase) VoteContestant(UserVotesPayload domain.UserVotesPayload)
 func (usecase *usecase) GetAllContestants() ([]domain.Contestants, error) {
 	var response []domain.Contestants
 	response, err := usecase.cache.GetAllContestants()
-	if err != nil {
+	if err == nil {
 		return response, err
 	} else {
 		response, err := usecase.repository.GetAllContestants()
@@ -98,7 +98,7 @@ func (usecase *usecase) GetAllContestants() ([]domain.Contestants, error) {
 func (usecase *usecase) GetNominatedContestants() ([]domain.Contestants, error) {
 	var response []domain.Contestants
 	response, err := usecase.cache.GetNominatedContestants()
-	if err != nil {
+	if err == nil {
 		return response, err
 	} else {
 		response, err := usecase.repository.GetNominatedContestants()
@@ -118,7 +118,7 @@ func (usecase *usecase) GetNominatedContestants() ([]domain.Contestants, error) 
 func (usecase *usecase) GetVotesInPercentages() (votes domain.VotesPercentages, err error) {
 	var votesPercentages domain.VotesPercentages
 	response, cacheErr := usecase.cache.GetPercentagesResults()
-	if cacheErr != nil {
+	if cacheErr == nil {
 		return response, cacheErr
 	} else {
 		// call getAllContestantVotes
