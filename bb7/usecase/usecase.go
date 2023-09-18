@@ -76,19 +76,17 @@ func (usecase *usecase) VoteContestant(UserVotesPayload domain.UserVotesPayload)
 
 // cache it for 5 months.
 func (usecase *usecase) GetAllContestants() ([]domain.Contestants, error) {
-	var response []domain.Contestants
 	response, err := usecase.cache.GetAllContestants()
 	if err == nil {
 		return response, err
-	} else {
-		response, err := usecase.repository.GetAllContestants()
-		if err != nil {
-			return response, err
-		}
-		err = usecase.cache.SaveAllContestants(response)
-		if err != nil {
-			fmt.Println("Error while saving data into cache")
-		}
+	}
+	response, err = usecase.repository.GetAllContestants()
+	if err != nil {
+		return response, err
+	}
+	saveErr := usecase.cache.SaveAllContestants(response)
+	if saveErr != nil {
+		fmt.Println("Error while saving data into cache")
 	}
 	return response, err
 }
