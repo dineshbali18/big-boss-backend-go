@@ -8,10 +8,11 @@ import (
 
 type usecase struct {
 	repository domain.BBRepository
+	cache      domain.CacheService
 }
 
-func NewUser(repository domain.BBRepository) domain.BBUsecase {
-	return &usecase{repository: repository}
+func NewUser(repository domain.BBRepository, cache domain.CacheService) domain.BBUsecase {
+	return &usecase{repository: repository, cache: cache}
 }
 
 func (useCase *usecase) RegisterUserUsingDeviceID(userRegisterationPayload domain.UserRegisterationPayload) (userRegisterationResponse domain.UserRegisterationResponse, err error) {
@@ -75,7 +76,7 @@ func (usecase *usecase) VoteContestant(UserVotesPayload domain.UserVotesPayload)
 
 // cache it for 5 months.
 func (usecase *usecase) GetAllContestants() ([]domain.Contestants, error) {
-	fmt.Println("IN USECASE")
+
 	response, err := usecase.repository.GetAllContestants()
 	if err != nil {
 		return response, err

@@ -66,7 +66,7 @@ func main() {
 		fmt.Println("Redis connected succesfully....", res)
 	}
 
-	bbDelivery.NewBBHandler(e, bbUsecase.NewUser(bbRepository.NewUser(db)))
+	bbDelivery.NewBBHandler(e, bbUsecase.NewUser(bbRepository.NewUser(db), cacheService))
 	log.Fatal(e.Start(":" + "80"))
 
 }
