@@ -4,6 +4,7 @@ import (
 	"big-boss-7/config"
 	"big-boss-7/domain"
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -62,5 +63,104 @@ func InitRedisCacheService() redis.UniversalClient {
 
 func (rdb *redisCacheService) CheckRedisConnection() (result string, err error) {
 	result, err = rdb.redisClient.Ping(ctx).Result()
+	return
+}
+
+func (rdb *redisCacheService) GetAllContestants() (contestants []domain.Contestants, err error) {
+	cacheKey := "all:contestants"
+	response, redisErr := rdb.redisClient.Get(context.Background(), cacheKey).Result()
+	if redisErr != nil {
+		fmt.Println("Cannot get data in get all contestants")
+		return contestants, redisErr
+	}
+
+	err = json.Unmarshal([]byte(response), &contestants)
+	if err != nil {
+		return
+	}
+	return
+
+}
+
+func (rdb *redisCacheService) SaveAllContestants(contestants []domain.Contestants) (err error) {
+	cacheKey := "all:contestants"
+
+	keyExists := rdb.redisClient.Exists(context.Background(), cacheKey)
+	if keyExists.Val() == 0 {
+		marshaledData, marshalErr := json.Marshal(contestants)
+		if marshalErr != nil {
+			return marshalErr
+		}
+		err = rdb.redisClient.Set(context.Background(), cacheKey, string(marshaledData), config.ContestantsDataTTL).Err()
+		if err != nil {
+			fmt.Println("Error in saving data in cache")
+			return
+		}
+	}
+	return
+}
+
+func (rdb *redisCacheService) GetNominatedContestants() (contestants []domain.Contestants, err error) {
+	cacheKey := "nominated:contestants"
+
+	response, redisErr := rdb.redisClient.Get(context.Background(), cacheKey).Result()
+	if redisErr != nil {
+		return contestants, redisErr
+	}
+
+	err = json.Unmarshal([]byte(response), &contestants)
+	if err != nil {
+		fmt.Println("Failed to unmarshal in get nominated contestants")
+		return
+	}
+	return
+}
+
+func (rdb *redisCacheService) SaveNominatedContestants(contestants []domain.Contestants) (err error) {
+	cacheKey := "nominated:contestants"
+
+	keyExists := rdb.redisClient.Exists(context.Background(), cacheKey)
+	if keyExists.Val() == 0 {
+		marshaledData, marshalErr := json.Marshal(contestants)
+		if marshalErr != nil {
+			return marshalErr
+		}
+		err = rdb.redisClient.Set(context.Background(), cacheKey, string(marshaledData), config.ContestantsDataTTL).Err()
+		if err != nil {
+			fmt.Println("Error in saving data in cache")
+			return
+		}
+	}
+	return
+}
+
+func (rdb *redisCacheService) GetPercentagesResults() (voteData domain.VotesPercentages, err error) {
+	cacheKey := "nominated:contestants:votes"
+	response, redisErr := rdb.redisClient.Get(context.Background(), cacheKey).Result()
+	if redisErr != nil {
+		return voteData, redisErr
+	}
+	err = json.Unmarshal([]byte(response), &voteData)
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (rdb *redisCacheService) SavePercentagesResults(VotesData domain.VotesPercentages) (err error) {
+	cacheKey := "nominated:contestants:votes"
+
+	keyExists := rdb.redisClient.Exists(context.Background(), cacheKey)
+	if keyExists.Val() == 0 {
+		marshaledData, marshalErr := json.Marshal(VotesData)
+		if marshalErr != nil {
+			return marshalErr
+		}
+		err = rdb.redisClient.Set(context.Background(), cacheKey, string(marshaledData), config.ContestantsDataTTL).Err()
+		if err != nil {
+			fmt.Println("Error in saving data in cache")
+			return
+		}
+	}
 	return
 }
