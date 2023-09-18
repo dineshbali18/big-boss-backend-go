@@ -93,55 +93,51 @@ func (usecase *usecase) GetAllContestants() ([]domain.Contestants, error) {
 
 // cache them for 1 week from monday to sunday to monday
 func (usecase *usecase) GetNominatedContestants() ([]domain.Contestants, error) {
-	var response []domain.Contestants
 	response, err := usecase.cache.GetNominatedContestants()
 	if err == nil {
 		return response, err
-	} else {
-		response, err := usecase.repository.GetNominatedContestants()
-		if err != nil {
-			return response, err
-		}
-		err = usecase.cache.SaveNominatedContestants(response)
-		if err != nil {
-			fmt.Println("Error while saving nominated contestants")
-		}
+	}
+	response, err = usecase.repository.GetNominatedContestants()
+	if err != nil {
+		return response, err
+	}
+	saveErr := usecase.cache.SaveNominatedContestants(response)
+	if saveErr != nil {
+		fmt.Println("Error while saving nominated contestants")
 	}
 	return response, err
 }
 
 // cache it for 15 min
-func (usecase *usecase) GetVotesInPercentages() (votes domain.VotesPercentages, err error) {
-	var votesPercentages domain.VotesPercentages
+func (usecase *usecase) GetVotesInPercentages() (votesPercentages domain.VotesPercentages, err error) {
 	response, cacheErr := usecase.cache.GetPercentagesResults()
 	if cacheErr == nil {
 		return response, cacheErr
-	} else {
-		// call getAllContestantVotes
-		votes, err := usecase.repository.GetAllContestantsVotes()
-		if err != nil {
-			return votesPercentages, err
-		}
-		fmt.Println(votes)
-		sort.Slice(votes, func(i int, j int) bool {
-			return votes[i].Votes < votes[j].Votes
-		})
-		fmt.Println("AFTER SORTING :", votes)
-		var totalVotes int64
-		for i := range votes {
-			votesPercentages.Name = append(votesPercentages.Name, votes[i].Name)
-			totalVotes += int64(votes[i].Votes)
-		}
+	}
+	// call getAllContestantVotes
+	votes, err := usecase.repository.GetAllContestantsVotes()
+	if err != nil {
+		return votesPercentages, err
+	}
+	fmt.Println(votes)
+	sort.Slice(votes, func(i int, j int) bool {
+		return votes[i].Votes < votes[j].Votes
+	})
+	fmt.Println("AFTER SORTING :", votes)
+	var totalVotes int64
+	for i := range votes {
+		votesPercentages.Name = append(votesPercentages.Name, votes[i].Name)
+		totalVotes += int64(votes[i].Votes)
+	}
 
-		for j := range votes {
-			tmpVotes := votes[j].Votes
-			tempPercentage := float32(tmpVotes) / float32(totalVotes)
-			votesPercentages.Percentages = append(votesPercentages.Percentages, tempPercentage*100)
-		}
-		err = usecase.cache.SavePercentagesResults(votesPercentages)
-		if err != nil {
-			fmt.Println("Error in saving percentage results")
-		}
+	for j := range votes {
+		tmpVotes := votes[j].Votes
+		tempPercentage := float32(tmpVotes) / float32(totalVotes)
+		votesPercentages.Percentages = append(votesPercentages.Percentages, tempPercentage*100)
+	}
+	saveErr := usecase.cache.SavePercentagesResults(votesPercentages)
+	if saveErr != nil {
+		fmt.Println("Error in saving percentage results")
 	}
 
 	return votesPercentages, err
