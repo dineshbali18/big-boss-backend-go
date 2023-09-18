@@ -1,6 +1,7 @@
 package http
 
 import (
+	"big-boss-7/bb7/delivery/helpers"
 	"big-boss-7/domain"
 	"encoding/json"
 	"fmt"
@@ -90,7 +91,7 @@ func (delivery *delivery) GetAllContestants(context echo.Context) error {
 	if err != nil {
 		return context.JSON(http.StatusBadRequest, 500)
 	}
-	return context.JSON(http.StatusOK, response)
+	return helpers.SetEtag(context, response)
 }
 
 func (delivery *delivery) GetNominatedContestants(context echo.Context) error {
@@ -98,7 +99,7 @@ func (delivery *delivery) GetNominatedContestants(context echo.Context) error {
 	if err != nil {
 		return context.JSON(http.StatusBadRequest, err)
 	}
-	return context.JSON(http.StatusOK, response)
+	return helpers.SetEtag(context, response)
 }
 
 func (delivery *delivery) GetVotesInPercentages(context echo.Context) error {
@@ -107,7 +108,7 @@ func (delivery *delivery) GetVotesInPercentages(context echo.Context) error {
 		log.Println("Get votes in percentages", err)
 		return context.JSON(http.StatusBadRequest, err)
 	}
-	return context.JSON(http.StatusOK, response)
+	return helpers.SetEtag(context, response)
 }
 
 func (delivery *delivery) GetUserVotes(context echo.Context) error {
@@ -120,5 +121,5 @@ func (delivery *delivery) GetUserVotes(context echo.Context) error {
 	if err != nil {
 		return context.JSON(http.StatusBadRequest, err)
 	}
-	return context.JSON(http.StatusOK, votesAvailable)
+	return helpers.SetEtag(context, votesAvailable)
 }
