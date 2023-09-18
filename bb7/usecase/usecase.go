@@ -88,7 +88,6 @@ func (usecase *usecase) GetAllContestants() ([]domain.Contestants, error) {
 		err = usecase.cache.SaveAllContestants(response)
 		if err != nil {
 			fmt.Println("Error while saving data into cache")
-			return response, err
 		}
 	}
 	return response, err
@@ -108,7 +107,6 @@ func (usecase *usecase) GetNominatedContestants() ([]domain.Contestants, error) 
 		err = usecase.cache.SaveNominatedContestants(response)
 		if err != nil {
 			fmt.Println("Error while saving nominated contestants")
-			return response, err
 		}
 	}
 	return response, err
@@ -145,7 +143,6 @@ func (usecase *usecase) GetVotesInPercentages() (votes domain.VotesPercentages, 
 		err = usecase.cache.SavePercentagesResults(votesPercentages)
 		if err != nil {
 			fmt.Println("Error in saving percentage results")
-			return votesPercentages, err
 		}
 	}
 
