@@ -96,7 +96,7 @@ func (repository *repository) GetAllContestantsVotes() ([]domain.ContestantVotes
 	var contestantVotes []domain.ContestantVotes
 	// join contestant and contestant votes
 	err := repository.db.WithContext(context.Background()).Table(domain.ContestantsVotesTable).
-		Joins("INNER JOIN contestants ON contestants.id = contestants_votes.contestant_id").Where("is_nominated=1").
+		Joins("INNER JOIN contestants ON contestants.id = contestants_votes.contestant_id").Where("contestants.is_nominated=1").Select("contestants.id", "contestants.name", "contestants_votes.votes").
 		Find(&contestantVotes).Error
 	if err != nil {
 		return contestantVotes, err
