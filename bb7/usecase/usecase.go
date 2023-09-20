@@ -121,7 +121,7 @@ func (usecase *usecase) GetVotesInPercentages() (votesPercentages domain.VotesPe
 	}
 	fmt.Println(votes)
 	sort.Slice(votes, func(i int, j int) bool {
-		return votes[i].Votes < votes[j].Votes
+		return votes[i].Votes > votes[j].Votes
 	})
 	fmt.Println("AFTER SORTING :", votes)
 	var totalVotes int64
