@@ -23,7 +23,7 @@ var ContestantsDataTTL time.Duration = 60 * 24 * 7 * time.Minute
 
 var NominatedContestantsTTL time.Duration = 60 * 24 * time.Minute
 
-var CheckVotingPercentagesTTL time.Duration = 60 * 15 * time.Minute
+var CheckVotingPercentagesTTL time.Duration = 20 * time.Minute
 
 // RedisConfiguration holds the values required to connect to the redis instance
 type RedisConfiguration struct {

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	redis "github.com/redis/go-redis/v9"
 )
@@ -103,6 +104,12 @@ func (rdb *redisCacheService) SaveAllContestants(contestants []domain.Contestant
 func (rdb *redisCacheService) GetNominatedContestants() (contestants []domain.Contestants, err error) {
 	cacheKey := "nominated:contestants"
 
+	// Get the current day as a string
+	day := time.Now().Format("2006-01-02") // Format it as needed
+
+	// Append the day to the cacheKey
+	cacheKey += ":" + day
+
 	response, redisErr := rdb.redisClient.Get(context.Background(), cacheKey).Result()
 	if redisErr != nil {
 		return contestants, redisErr
@@ -118,6 +125,12 @@ func (rdb *redisCacheService) GetNominatedContestants() (contestants []domain.Co
 
 func (rdb *redisCacheService) SaveNominatedContestants(contestants []domain.Contestants) (err error) {
 	cacheKey := "nominated:contestants"
+
+	// Get the current day as a string
+	day := time.Now().Format("2006-01-02") // Format it as needed
+
+	// Append the day to the cacheKey
+	cacheKey += ":" + day
 
 	keyExists := rdb.redisClient.Exists(context.Background(), cacheKey)
 	if keyExists.Val() == 0 {
@@ -136,6 +149,11 @@ func (rdb *redisCacheService) SaveNominatedContestants(contestants []domain.Cont
 
 func (rdb *redisCacheService) GetPercentagesResults() (voteData domain.VotesPercentages, err error) {
 	cacheKey := "nominated:contestants:votes"
+	// Get the current day as a string
+	day := time.Now().Format("2006-01-02") // Format it as needed
+
+	// Append the day to the cacheKey
+	cacheKey += ":" + day
 	response, redisErr := rdb.redisClient.Get(context.Background(), cacheKey).Result()
 	if redisErr != nil {
 		return voteData, redisErr
@@ -149,6 +167,12 @@ func (rdb *redisCacheService) GetPercentagesResults() (voteData domain.VotesPerc
 
 func (rdb *redisCacheService) SavePercentagesResults(VotesData domain.VotesPercentages) (err error) {
 	cacheKey := "nominated:contestants:votes"
+
+	// Get the current day as a string
+	day := time.Now().Format("2006-01-02") // Format it as needed
+
+	// Append the day to the cacheKey
+	cacheKey += ":" + day
 
 	keyExists := rdb.redisClient.Exists(context.Background(), cacheKey)
 	if keyExists.Val() == 0 {
