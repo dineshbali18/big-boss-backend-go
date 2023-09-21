@@ -150,7 +150,7 @@ func (rdb *redisCacheService) SaveNominatedContestants(contestants []domain.Cont
 		if marshalErr != nil {
 			return marshalErr
 		}
-		err = rdb.redisClient.Set(context.Background(), cacheKey, string(marshaledData), config.ContestantsDataTTL).Err()
+		err = rdb.redisClient.Set(context.Background(), cacheKey, string(marshaledData), config.NominatedContestantsTTL).Err()
 		if err != nil {
 			fmt.Println("Error in saving data in cache")
 			return
@@ -202,7 +202,7 @@ func (rdb *redisCacheService) SavePercentagesResults(VotesData domain.VotesPerce
 		if marshalErr != nil {
 			return marshalErr
 		}
-		err = rdb.redisClient.Set(context.Background(), cacheKey, string(marshaledData), config.ContestantsDataTTL).Err()
+		err = rdb.redisClient.Set(context.Background(), cacheKey, string(marshaledData), config.CheckVotingPercentagesTTL).Err()
 		if err != nil {
 			fmt.Println("Error in saving data in cache")
 			return
