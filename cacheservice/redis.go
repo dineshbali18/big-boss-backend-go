@@ -104,8 +104,16 @@ func (rdb *redisCacheService) SaveAllContestants(contestants []domain.Contestant
 func (rdb *redisCacheService) GetNominatedContestants() (contestants []domain.Contestants, err error) {
 	cacheKey := "nominated:contestants"
 
+	loc, err1 := time.LoadLocation("Asia/Kolkata")
+	if err1 != nil {
+		fmt.Println("Error loading location:", err1)
+	}
+
 	// Get the current day as a string
-	day := time.Now().Format("2006-01-02") // Format it as needed
+	day := time.Now().In(loc).Format("2006-01-02") // Format it as needed
+
+	fmt.Println("TIME", time.Now())
+	fmt.Println("TIME", time.Now().Format("2006-01-02"))
 
 	// Append the day to the cacheKey
 	cacheKey += ":" + day
@@ -125,9 +133,13 @@ func (rdb *redisCacheService) GetNominatedContestants() (contestants []domain.Co
 
 func (rdb *redisCacheService) SaveNominatedContestants(contestants []domain.Contestants) (err error) {
 	cacheKey := "nominated:contestants"
+	loc, err1 := time.LoadLocation("Asia/Kolkata")
+	if err1 != nil {
+		fmt.Println("Error loading location:", err1)
+	}
 
 	// Get the current day as a string
-	day := time.Now().Format("2006-01-02") // Format it as needed
+	day := time.Now().In(loc).Format("2006-01-02") // Format it as needed
 
 	// Append the day to the cacheKey
 	cacheKey += ":" + day
@@ -149,8 +161,13 @@ func (rdb *redisCacheService) SaveNominatedContestants(contestants []domain.Cont
 
 func (rdb *redisCacheService) GetPercentagesResults() (voteData domain.VotesPercentages, err error) {
 	cacheKey := "nominated:contestants:votes"
+	loc, err1 := time.LoadLocation("Asia/Kolkata")
+	if err1 != nil {
+		fmt.Println("Error loading location:", err1)
+	}
+
 	// Get the current day as a string
-	day := time.Now().Format("2006-01-02") // Format it as needed
+	day := time.Now().In(loc).Format("2006-01-02") // Format it as needed
 
 	// Append the day to the cacheKey
 	cacheKey += ":" + day
@@ -168,8 +185,13 @@ func (rdb *redisCacheService) GetPercentagesResults() (voteData domain.VotesPerc
 func (rdb *redisCacheService) SavePercentagesResults(VotesData domain.VotesPercentages) (err error) {
 	cacheKey := "nominated:contestants:votes"
 
+	loc, err1 := time.LoadLocation("Asia/Kolkata")
+	if err1 != nil {
+		fmt.Println("Error loading location:", err1)
+	}
+
 	// Get the current day as a string
-	day := time.Now().Format("2006-01-02") // Format it as needed
+	day := time.Now().In(loc).Format("2006-01-02") // Format it as needed
 
 	// Append the day to the cacheKey
 	cacheKey += ":" + day
