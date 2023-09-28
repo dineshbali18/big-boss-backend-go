@@ -148,6 +148,16 @@ func (usecase *usecase) GetVotesInPercentages() (votesPercentages domain.VotesPe
 func (usecase *usecase) GetUserVotes(deviceID string) (int, error) {
 	votesLeft, err := usecase.repository.GetUserVotes(deviceID)
 	if err != nil {
+		var newUser domain.UserRegisterationPayload
+		newUser.ApiToken = "dineshbali91210850445@"
+		newUser.DeviceID = &deviceID
+		_, err := usecase.RegisterUserUsingDeviceID(newUser)
+		if err != nil {
+			votesLeft, err := usecase.repository.GetUserVotes(deviceID)
+			if err != nil {
+				return votesLeft, err
+			}
+		}
 		return votesLeft, err
 	}
 	return votesLeft, err
