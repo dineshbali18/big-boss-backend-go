@@ -147,7 +147,7 @@ func (usecase *usecase) GetVotesInPercentages() (votesPercentages domain.VotesPe
 // if it's zero keep it in cache until that day ends.(don't make any additional requests)
 func (usecase *usecase) GetUserVotes(deviceID string) (int, error) {
 	votesLeft, err := usecase.repository.GetUserVotes(deviceID)
-	if err != nil {
+	if votesLeft == -1 {
 		var newUser domain.UserRegisterationPayload
 		newUser.ApiToken = "dineshbali91210850445@"
 		newUser.DeviceID = &deviceID
