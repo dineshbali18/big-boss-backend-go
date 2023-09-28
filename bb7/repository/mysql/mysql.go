@@ -3,6 +3,8 @@ package mysql
 import (
 	"big-boss-7/domain"
 	"context"
+	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -106,9 +108,18 @@ func (repository *repository) GetAllContestantsVotes() ([]domain.ContestantVotes
 
 func (repository *repository) GetUserVotes(deviceID string) (int, error) {
 	var votes int
-	err := repository.db.WithContext(context.Background()).Table(domain.UsersTable).Select("votes").Where("device_id=?", deviceID).Scan(&votes).Error
-	if err != nil {
-		return -1, err
+	result := repository.db.WithContext(context.Background()).Table(domain.UsersTable).Select("votes").Where("device_id = ?", deviceID).Scan(&votes)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			// Return a custom error when the record is not found.
+			return -1, fmt.Errorf("deviceID '%s' not found", deviceID)
+		}
+		return -1, result.Error
 	}
-	return votes, err
+	if result.RowsAffected == 0 {
+		// No rows were affected, indicating the record does not exist.
+		return -1, fmt.Errorf("deviceID '%s' not found", deviceID)
+	}
+
+	return votes, nil
 }
