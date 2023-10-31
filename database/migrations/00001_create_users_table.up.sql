@@ -9,4 +9,4 @@ CREATE TABLE users (
   
 -- Add primary key and unique index to deviceID
 ALTER TABLE users ADD PRIMARY KEY(id),
-ADD UNIQUE KEY `device_id_idx`;
+ADD UNIQUE KEY `device_id_idx`(device_id);
