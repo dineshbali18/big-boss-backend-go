@@ -67,6 +67,6 @@ func main() {
 	}
 
 	bbDelivery.NewBBHandler(e, bbUsecase.NewUser(bbRepository.NewUser(db), cacheService))
-	log.Fatal(e.Start(":" + "80"))
+	log.Fatal(e.Start(":" + "8080"))
 
 }
