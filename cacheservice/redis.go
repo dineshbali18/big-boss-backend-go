@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	_ "time/tzdata"
+
 	redis "github.com/redis/go-redis/v9"
 )
 
