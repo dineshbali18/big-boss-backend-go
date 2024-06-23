@@ -93,27 +93,27 @@ func (usecase *usecase) GetAllContestants() ([]domain.Contestants, error) {
 
 // cache them for 1 week from monday to sunday to monday
 func (usecase *usecase) GetNominatedContestants() ([]domain.Contestants, error) {
-	// response, err := usecase.cache.GetNominatedContestants()
-	// if err == nil {
-	// 	return response, err
-	// }
-	response, err := usecase.repository.GetNominatedContestants()
+	response, err := usecase.cache.GetNominatedContestants()
+	if err == nil {
+		return response, err
+	}
+	response, err = usecase.repository.GetNominatedContestants()
 	if err != nil {
 		return response, err
 	}
-	// saveErr := usecase.cache.SaveNominatedContestants(response)
-	// if saveErr != nil {
-	// 	fmt.Println("Error while saving nominated contestants")
-	// }
+	saveErr := usecase.cache.SaveNominatedContestants(response)
+	if saveErr != nil {
+		fmt.Println("Error while saving nominated contestants")
+	}
 	return response, err
 }
 
 // cache it for 15 min
 func (usecase *usecase) GetVotesInPercentages() (votesPercentages domain.VotesPercentages, err error) {
-	// response, cacheErr := usecase.cache.GetPercentagesResults()
-	// if cacheErr == nil {
-	// 	return response, cacheErr
-	// }
+	response, cacheErr := usecase.cache.GetPercentagesResults()
+	if cacheErr == nil {
+		return response, cacheErr
+	}
 	// call getAllContestantVotes
 	votes, err := usecase.repository.GetAllContestantsVotes()
 	if err != nil {
@@ -135,10 +135,10 @@ func (usecase *usecase) GetVotesInPercentages() (votesPercentages domain.VotesPe
 		tempPercentage := float32(tmpVotes) / float32(totalVotes)
 		votesPercentages.Percentages = append(votesPercentages.Percentages, tempPercentage*100)
 	}
-	// saveErr := usecase.cache.SavePercentagesResults(votesPercentages)
-	// if saveErr != nil {
-	// 	fmt.Println("Error in saving percentage results")
-	// }
+	saveErr := usecase.cache.SavePercentagesResults(votesPercentages)
+	if saveErr != nil {
+		fmt.Println("Error in saving percentage results")
+	}
 
 	return votesPercentages, err
 }
