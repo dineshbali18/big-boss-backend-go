@@ -49,7 +49,7 @@ func (delivery *delivery) RegisterUserUsingDeviceId(context echo.Context) error 
 	}
 
 	if userRegisterationPayload.DeviceID == nil || (userRegisterationPayload.DeviceID != nil && len(*userRegisterationPayload.DeviceID) == 0) {
-		log.Println(err.Error())
+		// log.Println(err.Error())
 		return context.JSON(http.StatusBadRequest, domain.InvalidDeviceIDPayload)
 	}
 

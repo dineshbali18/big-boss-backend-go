@@ -4,6 +4,7 @@ import (
 	"big-boss-7/config"
 	"fmt"
 	"log"
+	"time"
 
 	cacheServices "big-boss-7/cacheservice"
 
@@ -53,6 +54,16 @@ func main() {
 	if err != nil {
 		log.Println(err.Error())
 	}
+
+	sqlDB, err := db.DB()
+	if err != nil {
+		log.Fatal("failed to get database handle: ", err)
+	}
+
+	sqlDB.SetMaxOpenConns(15)                  // Maximum number of open connections
+	sqlDB.SetMaxIdleConns(15)                  // Maximum number of idle connections
+	sqlDB.SetConnMaxLifetime(15 * time.Minute) // Maximum connection lifetime
+	sqlDB.SetConnMaxIdleTime(2 * time.Minute)  // Maximum idle time before connection is reused
 
 	fmt.Println("DATABASE CONNECTED SUCCESSFULLY")
 
