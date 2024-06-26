@@ -39,7 +39,7 @@ func InitRedisCacheService() redis.UniversalClient {
 			Addrs:         addr,
 			Password:      rdbConfig.RedisPassword,
 			RouteRandomly: true,
-			PoolSize:      20,
+			PoolSize:      15,
 			PoolTimeout:   1500 * time.Second,
 			DialTimeout:   config.DialTimeout,
 			ReadTimeout:   config.ReadTimeout,
@@ -50,7 +50,7 @@ func InitRedisCacheService() redis.UniversalClient {
 		redisClient = redis.NewClient(&redis.Options{
 			Addr:         rdbConfig.RedisURL,
 			Password:     rdbConfig.RedisPassword,
-			PoolSize:     20,
+			PoolSize:     15,
 			PoolTimeout:  1500 * time.Second,
 			DialTimeout:  config.DialTimeout,
 			ReadTimeout:  config.ReadTimeout,
