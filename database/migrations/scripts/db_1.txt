@@ -1,0 +1,91 @@
+//1
+drop database BigBoss7;
+CREATE DATABASE BigBoss7;
+use BigBoss7;
+
+CREATE TABLE users ( 
+    id bigint unsigned NOT NULL AUTO_INCREMENT,
+    device_id varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Represents device id of the user',
+    votes tinyint(3) UNSIGNED DEFAULT 1 COMMENT 'Represents number of votes left to the particular deviceID',
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp at which the row was created',
+    PRIMARY KEY (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT ='Table to store device id registrations';
+  
+-- Add primary key and unique index to deviceID
+ALTER TABLE users 
+ADD UNIQUE KEY device_id_idx(device_id);
+
+CREATE TABLE contestants ( 
+    id bigint unsigned NOT NULL AUTO_INCREMENT,
+    name varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Represents name of the contestant',
+    description text COLLATE utf8mb4_unicode_ci NULL COMMENT 'Represents description for the contestant',
+    image varchar(255) NULL COMMENT 'Represents image link of the contestant',
+    is_nominated boolean DEFAULT 0 COMMENT 'Represents whether the contestant is nominated or not',
+    PRIMARY KEY (id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT ='Table to store device id registrations';
+
+-- Added index to is_nominated and name columns
+ALTER TABLE contestants
+ADD KEY is_nominated(is_nominated),
+ADD KEY name(name);
+
+CREATE TABLE contestants_votes ( 
+    id bigint unsigned NOT NULL AUTO_INCREMENT,
+    contestant_id bigint unsigned,
+    votes bigint UNSIGNED DEFAULT 0 COMMENT 'Represents number of votes received to a particular contestant',
+        PRIMARY KEY (id),
+    FOREIGN KEY (contestant_id) REFERENCES contestants (id) 
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT ='Table to store contestant voting data';
+
+
+//2 
+
+INSERT INTO contestants (name, description, image, is_nominated) VALUES
+('Chandrika', 'Description for Chandrika', 'https://static.tnn.in/photo/msid-111173663/111173663.jpg', 0),
+('Ranvir', 'Description for Ranvir', 'https://static.tnn.in/photo/msid-111173774/111173774.jpg', 0),
+('Shivani', 'Description for Shivani', 'https://static.tnn.in/photo/msid-111173918/111173918.jpg', 0),
+('Sana M', 'Description for Sana M', 'https://static.tnn.in/photo/msid-111173990/111173990.jpg', 0),
+('Vishal', 'Description for Vishal', 'https://static.tnn.in/photo/msid-111174180/111174180.jpg', 0),
+('Kataria', 'Description for Kataria', 'https://static.tnn.in/photo/msid-111174244/111174244.jpg', 0),
+('Deepak', 'Description for Deepak', 'https://static.tnn.in/photo/msid-111174347/111174347.jpg', 0),
+('SaiKetan', 'Description for SaiKetan', 'https://static.tnn.in/photo/msid-111174758/111174758.jpg', 0),
+('Munisha', 'Description for Munisha', 'https://static.tnn.in/photo/msid-111174879/111174879.jpg', 0),
+('Sana S', 'Description for Sana S', 'https://static.tnn.in/photo/msid-111175158/111175158.jpg', 0),
+('Armaan', 'Description for Armaan', 'https://static.tnn.in/photo/msid-111175390/111175390.jpg', 0),
+('Payal Malik', 'Description for Payal Malik', 'https://static.tnn.in/photo/msid-111175406/111175406.jpg', 0),
+('Kritika Malik', 'Description for Kritika Malik', 'https://static.tnn.in/photo/msid-111175440/111175440.jpg', 0),
+('Neeraj', 'Description for Neeraj', 'https://static.tnn.in/photo/msid-111175522/111175522.jpg', 0),
+('Naezy', 'Description for Naezy', 'https://static.tnn.in/photo/msid-111175631/111175631.jpg', 0),
+('Poulomi', 'Description for Poulomi', 'https://static.tnn.in/photo/msid-111175744/111175744.jpg', 0);
+
+//3
+select * from users;
+select * from contestants;
+select * from contestants_votes;
+
+-- Insert data into contestants table with actual names, descriptions, and image links
+INSERT INTO contestants (name, description, image, is_nominated) VALUES
+('Chandrika', 'Description for Chandrika', 'https://static.tnn.in/photo/msid-111173663/111173663.jpg', 0),
+('Ranvir', 'Description for Ranvir', 'https://static.tnn.in/photo/msid-111173774/111173774.jpg', 0),
+('Shivani', 'Description for Shivani', 'https://static.tnn.in/photo/msid-111173918/111173918.jpg', 0),
+('Sana M', 'Description for Sana M', 'https://static.tnn.in/photo/msid-111173990/111173990.jpg', 0),
+('Vishal', 'Description for Vishal', 'https://static.tnn.in/photo/msid-111174180/111174180.jpg', 0),
+('Kataria', 'Description for Kataria', 'https://static.tnn.in/photo/msid-111174244/111174244.jpg', 0),
+('Deepak', 'Description for Deepak', 'https://static.tnn.in/photo/msid-111174347/111174347.jpg', 0),
+('SaiKetan', 'Description for SaiKetan', 'https://static.tnn.in/photo/msid-111174758/111174758.jpg', 0),
+('Munisha', 'Description for Munisha', 'https://static.tnn.in/photo/msid-111174879/111174879.jpg', 0),
+('Sana S', 'Description for Sana S', 'https://static.tnn.in/photo/msid-111175158/111175158.jpg', 0),
+('Armaan', 'Description for Armaan', 'https://static.tnn.in/photo/msid-111175390/111175390.jpg', 0),
+('Payal Malik', 'Description for Payal Malik', 'https://static.tnn.in/photo/msid-111175406/111175406.jpg', 0),
+('Kritika Malik', 'Description for Kritika Malik', 'https://static.tnn.in/photo/msid-111175440/111175440.jpg', 0),
+('Neeraj', 'Description for Neeraj', 'https://static.tnn.in/photo/msid-111175522/111175522.jpg', 0),
+('Naezy', 'Description for Naezy', 'https://static.tnn.in/photo/msid-111175631/111175631.jpg', 0),
+('Poulomi', 'Description for Poulomi', 'https://static.tnn.in/photo/msid-111175744/111175744.jpg', 0);
+-- Insert data into contestants_votes table with default votes of 1 for all contestants
+INSERT INTO contestants_votes (contestant_id, votes) VALUES
+(1, 1), (2, 1), (3, 1), (4, 1), (5, 1),
+(6, 1), (7, 1), (8, 1), (9, 1), (10, 1),
+(11, 1), (12, 1), (13, 1), (14, 1),(15,1),(16,1);
