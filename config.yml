@@ -2,9 +2,9 @@ DB_MYSQL_SECRETS: '{"username":"admin","password":"9121085044","type":"mysql","h
 
 
 REDIS_CLUSTER_MODE_ENABLED: true
-REDIS_HOST: "bb-redis-cluster-0001-001.bb-redis-cluster.do8rcv.aps1.cache.amazonaws.com"
+REDIS_HOST: "bb-redis-cluster-1.do8rcv.clustercfg.aps1.cache.amazonaws.com"
 
-REDIS_PORT: 6582
+REDIS_PORT: 6379
 REDIS_PASSWORD:
 REDIS_DB: 0
 
